@@ -37,7 +37,7 @@ class PoseReader
   end
 
   def skip_rest_of_line
-    while true
+    loop do
       c = read_char
       if c == "\n" or c == nil
         break
@@ -46,7 +46,7 @@ class PoseReader
   end
 
   def skip_whitespace_and_comments
-    while true
+    loop do
       c = peek_char
       if c == nil
         break
@@ -66,7 +66,7 @@ class PoseReader
       raise PoseSyntaxError("Not a token first char")
     end
     s = c
-    while true
+    loop do
       c = peek_char
       if c == nil or not token_next_char?(c)
         break
@@ -92,7 +92,7 @@ class PoseReader
 
   def read_delimited_list(end_char)
     forms = []
-    while true
+    loop do
       skip_whitespace_and_comments
       if peek_char == end_char
         read_char
@@ -110,7 +110,7 @@ class PoseReader
 
   def read_delimited_string(end_char)
     s = ""
-    while true
+    loop do
       c = read_char
       if c == nil
         raise PoseSyntaxError("Unterminated string")
@@ -168,7 +168,7 @@ class PoseReader
   def read_all
     forms = []
     begin
-      while true
+      loop do
         forms.append(read)
       end
     rescue EOFError
