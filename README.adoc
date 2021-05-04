@@ -332,6 +332,7 @@ The following table shows what different dialects do:
 |Lisp Flavored Erlang       |`true`  |`false`
 |Janet                      |`true`  |`false`
 |Fennel                     |`true`  |`false`
+|Urn                        |`true`  |`false`
 |Hy                         |`True`  |`False`
 |Scheme (R7RS alternative)  |`#true` |`#false`
 |Scheme                     |`#t`    |`#f`
