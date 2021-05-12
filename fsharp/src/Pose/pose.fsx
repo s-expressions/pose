@@ -1,4 +1,5 @@
-// Copyright 2021 Lassi Kortela, Oskar Gewalli
+// Copyright 2021 Lassi Kortela
+// Copyright 2021 Oskar Gewalli
 // SPDX-License-Identifier: ISC
 
 open System
