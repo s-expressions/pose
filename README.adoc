@@ -178,9 +178,9 @@ symbols used to be written in uppercase. When the Common Lisp standard
 came around, it dictated that lowercase or mixed-case symbols shall be
 normalized to uppercase equivalents when read in, with a reader option
 to change this behavior. Scheme has not traditionally dictated symbol
-case; R^6^RS (2007) was the Scheme standard that specified lowercase
-by default. Almost all Scheme implementations are now case sensitive
-by default, and use lowercase.
+case, but lowercase is the default starting with R^6^RS (2007). Almost
+all Scheme implementations are now case sensitive by default, and use
+lowercase.
 
 There is a clear long-term trend among programming languages that case
 sensitivity is winning, and more and more Lisp dialects and
