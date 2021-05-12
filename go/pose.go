@@ -1,3 +1,6 @@
+// Copyright 2021 Lassi Kortela
+// SPDX-License-Identifier: ISC
+
 package pose
 
 import (
