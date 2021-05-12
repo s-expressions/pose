@@ -77,8 +77,8 @@ the rule gives rise to the following special cases:
 
 * It's possible to construct a list where the second part of the last
   pair is neither a pair nor **nil**. In Lisp, we call such lists
-  _improper lists_ or _dotted lists_, and the last (possibly the only)
-  pair is a _dotted pair_.
+  _dotted lists_, and the last (possibly the only) pair is a _dotted
+  pair_.
 
 * When pairs are mutable, it's possible to construct a never-ending
   _circular list_ by making the second part of the last pair point
