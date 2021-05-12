@@ -1,7 +1,8 @@
 ;; Copyright 2021 Lassi Kortela
 ;; SPDX-License-Identifier: ISC
 
-(define pose-char-whitespace? char-whitespace?)
+(define (pose-whitespace? char)
+  (or (char=? #\x20 char) (char<=? #\x09 char #\x0D)))
 
 (define (string-member? string char)
   (let loop ((i (- (string-length string) 1)))
@@ -9,8 +10,9 @@
                       (loop (- i 1))))))
 
 (define (pose-token-common-char? char)
-  (or (char-alphabetic? char)
-      (char-numeric? char)
+  (or (char<=? #\0 char #\9)
+      (char<=? #\A char #\Z)
+      (char<=? #\a char #\z)
       (string-member? "_$!?<=>+-*" char)))
 
 (define (pose-token-first-char? char)
@@ -38,7 +40,7 @@
           ((char=? #\; char)
            (skip-rest-of-line)
            (skip-whitespace-and-comments))
-          ((pose-char-whitespace? char)
+          ((pose-whitespace? char)
            (read-char)
            (skip-whitespace-and-comments)))))
 

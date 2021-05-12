@@ -3,5 +3,5 @@
 
 (define-library (pose)
   (export pose-read pose-read-all)
-  (import (scheme base) (scheme char))
+  (import (scheme base))
   (include "pose.scm"))
