@@ -1,3 +1,6 @@
+(* Copyright 2021 Lassi Kortela *)
+(* SPDX-License-Identifier: ISC *)
+
 exception SyntaxError of string;
 
 datatype Exp
