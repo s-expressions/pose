@@ -1,3 +1,6 @@
+# Copyright 2021 Lassi Kortela
+# SPDX-License-Identifier: ISC
+
 def whitespace_char?(c)
   (c == " ") or (c == "\t") or (c == "\n") or (c == "\r")
 end
