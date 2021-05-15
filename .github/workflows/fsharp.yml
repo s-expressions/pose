@@ -1,0 +1,28 @@
+name: MSBuild
+
+on: [push]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: fsharp
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.SOLUTION_FILE_PATH}}
+      run: dotnet restore
+
+    - name: Test
+      working-directory: ${{env.SOLUTION_FILE_PATH}}
+      run: dotnet test
