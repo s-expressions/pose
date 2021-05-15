@@ -1,13 +1,13 @@
-name: dotnet F#
+name: dotnet C#
 
 on: 
   push:
     paths:
-      - 'fsharp/**'
+      - 'csharp/**'
 
 env:
   # Path to the solution file relative to the root of the project.
-  SOLUTION_FILE_PATH: fsharp
+  SOLUTION_FILE_PATH: csharp
 
 
 jobs:
