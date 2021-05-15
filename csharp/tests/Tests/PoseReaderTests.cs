@@ -1,3 +1,6 @@
+// Copyright 2021 Lassi Kortela
+// Copyright 2021 Oskar Gewalli
+// SPDX-License-Identifier: ISC
 using System;
 using System.IO;
 using System.Threading.Tasks;

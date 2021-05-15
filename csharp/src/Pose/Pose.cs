@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright 2021 Lassi Kortela
+// Copyright 2021 Oskar Gewalli
+// SPDX-License-Identifier: ISC
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
