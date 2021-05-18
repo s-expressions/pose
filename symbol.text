@@ -1,0 +1,42 @@
+Portable Lisp symbol syntax
+
+Punctuation permitted in symbols
+
+!   suffix for destructive operators (Scheme, Clojure)
+$   no particular meaning
+&   prefix for lambda list keywords (Common Lisp)
+*   prefix and suffix for dynamic variables (Common Lisp); math operator
++   prefix and suffix for constants (Common Lisp); math operator
+-   word delimiter in multi-word symbols; math operator
+/   math operator
+<   math operator
+=   math operator
+>   math operator
+_   for word delimiter in multi-word symbols (occasionally)
+
+Punctuation permitted in symbols, but not as the first character
+
+.   consing dot; prefix for instance method call (Clojure)
+?   prefix for character literal (Emacs Lisp); suffix for predicate (Scheme, Clojure)
+@   prefix for splice operation (Kawa Scheme)
+
+Punctuation not allowed anywhere in a symbol
+
+#   prefix for syntax extension; comment (Janet)
+%   prefix for character literal (Interlisp)
+'   prefix for quote
+,   prefix for unquote
+:   prefix for keyword; infix for symbol package (Common Lisp)
+;   prefix for comment
+\   prefix for character literal (Clojure); infix for string escape
+^   prefix for metadata attached to an object (Clojure)
+`   prefix for backquote/quasiquote
+~   prefix for unquote (Clojure)
+
+Punctuation not allowed anywhere in a symbol (paired)
+
+""  string literal
+()  paired delimiters
+[]  paired delimiters (Clojure, Scheme)
+{}  maps and sets (Clojure)
+||  symbol written using string syntax (Common Lisp, Scheme)
