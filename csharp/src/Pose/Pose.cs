@@ -66,7 +66,31 @@ namespace Pose
         public string Value { get; }
         public async Task Write(StreamWriter wr)
         {
-            await wr.WriteAsync("\"" + Value + "\"");
+            await wr.WriteAsync($"\"{Escape(Value)}\"");
+        }
+        private static string Escape(string value)
+        {
+            char[] toEscape = "\\\"".ToCharArray();
+            var sb = new StringBuilder();
+            var currentIndex = 0;
+            while (currentIndex < value.Length)
+            {
+                var indexOf = value.IndexOfAny(toEscape, currentIndex);
+                if (indexOf >= 0)
+                {
+                    var nextLength = indexOf - currentIndex;
+                    sb.Append(value.Substring(currentIndex, nextLength));
+                    sb.Append("\\");
+                    sb.Append(value.Substring(indexOf, 1));
+                    currentIndex = indexOf + 1;
+                }
+                else
+                {
+                    sb.Append(value.Substring(currentIndex, value.Length - currentIndex));
+                    break;
+                }
+            }
+            return sb.ToString();
         }
     }
     public readonly struct Float64 : IExpression
