@@ -34,10 +34,15 @@ let ``Can parse and stringify`` (sample:string, expected:string) =
             rd.ReadToEnd()
   Assert.Equal(expected, written)
 
+let exampleTestFiles : seq<obj array> = seq{
+  let files = IO.Directory.EnumerateFiles(".","*.pose")
+  for file in files do
+    yield [| file; IO.Path.ChangeExtension(file, "result") |]
+}
+
 [<Theory;
-  InlineData("srfi.pose");
-  InlineData("hello.pose")>]
-let ``Can parse`` (file:string) =
+  MemberData(nameof(exampleTestFiles))>]
+let ``Can parse`` (file:string,result:string) =
   let read =
             use stream = IO.File.OpenRead file
             use rd = new IO.BinaryReader (stream)
@@ -50,7 +55,6 @@ let ``Can parse`` (file:string) =
             stream.Seek (0L, IO.SeekOrigin.Begin) |> ignore
             use rd = new IO.StreamReader (stream)
             rd.ReadToEnd()
-  () // question is what to assert here
-  //let expected = IO.File.ReadAllText file
-  //Assert.Equal(expected, written)
+  let expected = IO.File.ReadAllText result
+  Assert.Equal(expected.Trim(), written.Trim())
 

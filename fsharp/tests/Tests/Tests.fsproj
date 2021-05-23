@@ -10,14 +10,16 @@
   <ItemGroup>
     <Compile Include="Tests.fs" />
     <Compile Include="Program.fs" />
-    <Content Include="..\..\..\examples\srfi.pose">
-      <Link>srfi.pose</Link>
+
+    <Content Include="..\..\..\examples\test\*.pose">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\examples\hello.pose">
-      <Link>hello.pose</Link>
+    <Content Include="..\..\..\examples\test\*.result">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+
   </ItemGroup>
 
   <ItemGroup>
