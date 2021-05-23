@@ -395,7 +395,7 @@ minus        = '-'
 sign         = '-' | '+'
 
 symbol       = signsym | wordsym
-signsym      = sign sigsym-2nd sigsym-cont*
+signsym      = sign signsym-2nd signsym-cont*
 signsym-2nd  = letter | punct-cont
 signsym-cont = letter | punct-cont | digit
 wordsym-1st  = letter | punct-1st
