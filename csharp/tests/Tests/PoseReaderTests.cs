@@ -15,6 +15,7 @@ namespace Tests
     {
         [Theory,
          InlineData("(symbol \"value\")", "(symbol \"value\")"),
+         InlineData("\"value\"", "\"value\""),
          InlineData("; Foo", ""),
          InlineData("  ; Bar", ""),
          InlineData("( 1 2  (|asdo\\|aisdj| \"dfdosi dsi\"))", "(1 2 (asdo|aisdj \"dfdosi dsi\"))"),
