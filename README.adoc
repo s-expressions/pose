@@ -320,22 +320,16 @@ whitespace  = HT | LF | VT | FF | CR | space
 comment     = ';' and all subsequent characters up to a line ending
 
 expression  = string | symbol | number | list
-symbol      = barsym | word
+symbol      = word
 list        = '(' expressions ')'
-barsym      = '|' barsym-char* '|'
 string      = '"' string-char* '"'
-barsym-char = barsym-esc | literal character
 string-char = string-esc | literal character
-barsym-esc  = \\ | \|
 string-esc  = \\ | \"
 word        = word-first word-cont*
 word-first  = a-z A-Z + - * / % & < = > _
 word-cont   = word-first | 0-9 . ! ? $
 
-number      = '0' | decimal | bin | oct | hex
-bin         = '#' 'b' sign? bin-digits
-oct         = '#' 'o' sign? oct-digits
-hex         = '#' 'x' sign? hex-digits
+number      = '0' | decimal
 decimal     = sign? 1-9 0-9* fraction? exponent?
 fraction    = '.' dec-digits
 exponent    = 'e' sign? dec-digits
@@ -358,7 +352,6 @@ sign        = '+' | '-'
 
 ----
 foo-bar
-|foo \\bar \| baz|
 ----
 
 ----
@@ -370,7 +363,4 @@ foo-bar
 123             -123            leading zero not permitted
 0.123           -0.123          zero required before the dot
 123.45          -123.45
-#b1010          #b-1010
-#o1010          #o-1010
-#x1010          #x-1010
 ----
