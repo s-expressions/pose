@@ -3,8 +3,10 @@
 // SPDX-License-Identifier: ISC
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Pose;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Tests
@@ -46,5 +48,37 @@ namespace Tests
             }
             Assert.Equal(expected, written);
         }
+
+        [Theory,
+         MemberData(nameof(ExampleTestFiles))]
+        public async Task Example_test_files_can_be_parsed_and_stringified(string file,string expectedFile)
+        {
+            IExpression[] exps;
+            {
+                using var stream = File.OpenRead(file);
+                using var rd = new BinaryReader(stream);
+                exps=new PoseReader().ReadAll(rd);
+            }
+            string written = null;
+            {
+                await using var stream = new MemoryStream();
+                await using var w = new StreamWriter(stream);
+                foreach (var exp in exps)
+                {
+                    await exp.Write(w);
+                }
+                await w.FlushAsync();
+                stream.Seek(0, SeekOrigin.Begin);
+
+                using var rd = new StreamReader(stream);
+                written = await rd.ReadToEndAsync();
+            }
+            var expected = await File.ReadAllTextAsync(expectedFile);
+            Assert.Equal(expected.Trim(), written.Trim());
+        }
+        public static IEnumerable<object[]> ExampleTestFiles => 
+              from file in Directory.EnumerateFiles(".","*.pose")
+              select new object[]{file, Path.ChangeExtension(file, "result")};
+
     }
 }
