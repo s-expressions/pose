@@ -394,9 +394,9 @@ exponent     = 'e' sign 0-9+
 minus        = '-'
 sign         = '-' | '+'
 
-symbol       = word-first word-cont*
+symbol       = symbol-first symbol-cont*
 symbol-first = a-z A-Z ! $ & * + - / < = > _
-symbol-cont  = word-first | 0-9 . ? @
+symbol-cont  = symbol-first | 0-9 . ? @
 ----
 
 ## Examples
