@@ -384,7 +384,7 @@ expression   = list | string | number | symbol
 list         = '(' expressions ')'
 
 string       = '"' string-char* '"'
-string-char  = string-esc | literal character
+string-char  = string-esc | any-char-except-backslash
 string-esc   = \\ | \"
 
 number       = '0' | decimal
@@ -403,7 +403,7 @@ signsym-cont = letter | punct-cont | digit
 punct-1st    = '!' | '$' | '&' | '*' | '+' | '-' | '/' | '<' | '=' | '>' | '_'
 punct-cont   = punct-1st | '.' | '?' | '@'
 
-letter       = a-z A-Z
+letter       = a-z | A-Z
 digit        = 0-9
 onenine      = 1-9
 minus        = '-'
