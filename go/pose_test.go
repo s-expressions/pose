@@ -48,9 +48,9 @@ func testFileMatches(t *testing.T, filename string, filenameExpected string) {
 			io.WriteString(buf, "\n")
 		}
 	}
-	output := buf.String()
+	output := strings.Trim(buf.String(), "\n")
 	bytesExpected, err := ioutil.ReadFile(filenameExpected)
-	expected := string(bytesExpected)
+	expected := strings.Trim(string(bytesExpected), "\n")
 	if err != nil {
 		t.Fatal(err)
 		return
