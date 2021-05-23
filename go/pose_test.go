@@ -25,11 +25,9 @@ func testFile(t *testing.T, filename string) {
 		t.Error(err)
 		return
 	}
-	for _, exp := range exps {
-		exp.Write(os.Stdout)
-		io.WriteString(os.Stdout, "\n")
-	}
+	_ = exps
 }
+
 func testFileMatches(t *testing.T, filename string, filenameExpected string) {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -75,6 +73,7 @@ func testSampleEqualsOutput(t *testing.T, sample string, expected string) {
 	exps, err := ReadAll(rd)
 	if err != nil {
 		t.Error(err)
+		t.Errorf("could not read sample %s", sample)
 		return
 	}
 	buf := new(bytes.Buffer)
@@ -110,7 +109,7 @@ func TestSRFI(t *testing.T) {
 
 	for _, file := range files {
 		if !file.IsDir() && strings.HasSuffix(file.Name(), ".pose") {
-			testFile(t, "../examples/test/"+file.Name())
+			testFileMatches(t, "../examples/test/"+file.Name(), "../examples/test/"+(strings.Replace(file.Name(), ".pose", ".result", 1)))
 		}
 	}
 }
