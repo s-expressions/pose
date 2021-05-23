@@ -70,8 +70,42 @@ func (exp Symbol) Write(wr io.Writer) error {
 	return err
 }
 
+// IndexAny returns the index of the first instance of any Unicode code point
+// from chars in s, or -1 if no Unicode code point from chars is present in s.
+func IndexAnyFromIndex(s, chars string, index int) int {
+	for i := index; i < len(s); i++ {
+		c := rune(s[i])
+		if strings.IndexRune(chars, c) >= 0 {
+			return i
+		}
+	}
+	return -1
+}
+
+func Escape(value string) string {
+	toEscape := "\\\""
+	var sb strings.Builder
+
+	var currentIndex = 0
+	for {
+		if currentIndex >= len(value) {
+			break
+		}
+		var indexOf = IndexAnyFromIndex(value, toEscape, currentIndex)
+		if indexOf >= 0 {
+			sb.WriteString(value[currentIndex:indexOf])
+			sb.WriteString("\\")
+			sb.WriteString(value[indexOf : indexOf+1])
+			currentIndex = indexOf + 1
+		} else {
+			sb.WriteString(value[currentIndex:])
+			break
+		}
+	}
+	return sb.String()
+}
 func (exp String) Write(wr io.Writer) error {
-	_, err := io.WriteString(wr, "\""+exp.value+"\"")
+	_, err := io.WriteString(wr, "\""+Escape(exp.value)+"\"")
 	return err
 }
 
@@ -333,7 +367,7 @@ func Read(rd *bufio.Reader) (Exp, error) {
 			return nil, makeSyntaxError("Stray closing parenthesis")
 		} else {
 			return nil, makeSyntaxError(
-				fmt.Sprintf("Unknown byte at top level: 0x%02x", c))
+				fmt.Sprintf("Unknown byte at top level: 0x%02x '%c'", c, c))
 		}
 	}
 }
