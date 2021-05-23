@@ -4,6 +4,7 @@
 module Pose
 
 open System
+open System.Text.RegularExpressions
 
 exception SyntaxError of string;
 
@@ -19,11 +20,19 @@ module internal String=
 
 let stringContainsChar (s:string) (goalChar:char) = s.Contains goalChar
 
-let charIsWhitespace char = Char.IsWhiteSpace char
+module internal Char=
+  let ord (c:char) = int32 c
 
-let charIsAlphabetic char = Char.IsLetter char
+let charIsWhitespace char =
+    let cc = Char.ord char in
+        (cc = 0x20) || (cc >= 0x09 && cc <= 0x0D)
 
-let charIsNumeric char = Char.IsNumber char
+let charIsAlphabetic char =
+    ((char >= 'A') && (char <= 'Z')) ||
+    ((char >= 'a') && (char <= 'z'))
+
+let charIsNumeric char =
+    ((char >= '0') && (char <= '9'))
 
 let charIsTokenCommon char =
     ((charIsAlphabetic char) ||
@@ -160,6 +169,10 @@ let readAll stream =
              |  Some form -> loop (form :: forms)
     in loop []
 
+let private escapeString (s:string) = 
+    let toEscape = "\\\""
+    String.implode [ for char in s.ToCharArray() do if stringContainsChar toEscape char then yield '\\'; yield char; else yield char ]
+
 let rec write stream form =
     match form with
       | EList [] -> TextIO.output (stream, "()")
@@ -173,7 +186,7 @@ let rec write stream form =
                                  loop ' ' forms)
                         in loop '(' forms )
       | ESymbol s   -> TextIO.output (stream, s)
-      | EString s   -> TextIO.output (stream, s)
+      | EString s   -> TextIO.output (stream, sprintf "\"%s\"" (escapeString s))
       | EReal n     -> TextIO.output (stream, (string n))
       | EInt n      -> TextIO.output (stream, (string n))
       | EIntInf n   -> TextIO.output (stream, (string n))

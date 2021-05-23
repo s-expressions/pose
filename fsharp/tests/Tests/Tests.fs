@@ -9,10 +9,10 @@ open Pose
 
 
 [<Theory;
-  InlineData("(symbol \"value\")", "(symbol value)");
+  InlineData("(symbol \"value\")", "(symbol \"value\")");
   InlineData("; Foo", "");
   InlineData("  ; Bar", "");
-  InlineData("( 1 2  (|asdo\|aisdj| \"dfdosi dsi\"))", "(1 2 (asdo|aisdj dfdosi dsi))");
+  InlineData("( 1 2  (|asdo\|aisdj| \"dfdosi dsi\"))", "(1 2 (asdo|aisdj \"dfdosi dsi\"))");
   InlineData("()", "()");
  >]
 let ``Can parse and stringify`` (sample:string, expected:string) =
