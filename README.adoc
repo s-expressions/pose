@@ -391,8 +391,6 @@ number       = '0' | decimal
 decimal      = minus? notzero digit* fraction? exponent?
 fraction     = '.' digit+
 exponent     = 'e' sign digit+
-minus        = '-'
-sign         = '-' | '+'
 
 symbol       = signsym | wordsym
 signsym      = sign signsym-rest
@@ -403,9 +401,12 @@ wordsym-1st  = letter | punct-1st
 wordsym-cont = letter | punct-cont | digit
 punct-1st    = '!' | '$' | '&' | '*' | '+' | '-' | '/' | '<' | '=' | '>' | '_'
 punct-cont   = punct-1st | '.' | '?' | '@'
+
 letter       = a-z A-Z
 digit        = 0-9
 notzero      = 1-9
+minus        = '-'
+sign         = '-' | '+'
 ----
 
 ## Examples
