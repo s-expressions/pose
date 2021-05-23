@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - 'csharp/**'
+  pull_request:
+    paths:
+      - 'csharp/**'
 
 env:
   # Path to the solution file relative to the root of the project.
