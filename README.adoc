@@ -313,27 +313,42 @@ with IANA. In the meantime, `text/x-pose` is suggested.
 ### Grammar
 
 ----
-expressions = (atmosphere* expression)* atmosphere*
+expressions  = (atmosphere* expression)* atmosphere*
 
-atmosphere  = whitespace | comment
-whitespace  = HT | LF | VT | FF | CR | space
-comment     = ';' and all subsequent characters up to a line ending
+atmosphere   = whitespace | comment
+whitespace   = HT | VT | FF | space | newline
+newline      = CR | LF
+comment      = ';' and all subsequent characters until newline or eof
 
-expression  = string | symbol | number | list
-symbol      = word
-list        = '(' expressions ')'
-string      = '"' string-char* '"'
-string-char = string-esc | literal character
-string-esc  = \\ | \"
-word        = word-first word-cont*
-word-first  = a-z A-Z + - * / % & < = > _
-word-cont   = word-first | 0-9 . ! ? $
+expression   = list | string | number | symbol
 
-number      = '0' | decimal
-decimal     = sign? 1-9 0-9* fraction? exponent?
-fraction    = '.' dec-digits
-exponent    = 'e' sign? dec-digits
-sign        = '+' | '-'
+list         = '(' expressions ')'
+
+string       = '"' string-char* '"'
+string-char  = string-esc | any-char-except-backslash
+string-esc   = \\ | \"
+
+number       = '0' | decimal
+decimal      = minus? onenine digit* fraction? exponent?
+fraction     = '.' digit+
+exponent     = 'e' sign digit+
+
+symbol       = wordsym | signsym
+wordsym      = wordsym-1st wordsym-cont*
+wordsym-1st  = letter | punct-1st
+wordsym-cont = letter | punct-cont | digit
+signsym      = sign signsym-rest?
+signsym-rest = signsym-2nd signsym-cont*
+signsym-2nd  = letter | punct-cont
+signsym-cont = letter | punct-cont | digit
+punct-1st    = '!' | '$' | '&' | '*' | '+' | '-' | '/' | '<' | '=' | '>' | '_'
+punct-cont   = punct-1st | '.' | '?' | '@'
+
+letter       = a-z | A-Z
+digit        = 0-9
+onenine      = 1-9
+minus        = '-'
+sign         = '-' | '+'
 ----
 
 ## Examples
