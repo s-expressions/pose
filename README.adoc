@@ -392,13 +392,14 @@ decimal      = minus? onenine digit* fraction? exponent?
 fraction     = '.' digit+
 exponent     = 'e' sign digit+
 
-symbol       = signsym | wordsym
+symbol       = wordsym | signsym
+wordsym      = wordsym-1st wordsym-cont*
+wordsym-1st  = letter | punct-1st
+wordsym-cont = letter | punct-cont | digit
 signsym      = sign signsym-rest
 signsym-rest = nothing | signsym-2nd signsym-cont*
 signsym-2nd  = letter | punct-cont
 signsym-cont = letter | punct-cont | digit
-wordsym-1st  = letter | punct-1st
-wordsym-cont = letter | punct-cont | digit
 punct-1st    = '!' | '$' | '&' | '*' | '+' | '-' | '/' | '<' | '=' | '>' | '_'
 punct-cont   = punct-1st | '.' | '?' | '@'
 
