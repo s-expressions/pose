@@ -388,7 +388,7 @@ string-char  = string-esc | literal character
 string-esc   = \\ | \"
 
 number       = '0' | decimal
-decimal      = minus? digit notzero* fraction? exponent?
+decimal      = minus? notzero digit* fraction? exponent?
 fraction     = '.' digit+
 exponent     = 'e' sign digit+
 minus        = '-'
