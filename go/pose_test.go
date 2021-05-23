@@ -7,7 +7,9 @@ import (
 	"bufio"
 	"bytes"
 	"io"
+	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -26,6 +28,38 @@ func testFile(t *testing.T, filename string) {
 	for _, exp := range exps {
 		exp.Write(os.Stdout)
 		io.WriteString(os.Stdout, "\n")
+	}
+}
+func testFileMatches(t *testing.T, filename string, filenameExpected string) {
+	file, err := os.Open(filename)
+	if err != nil {
+		t.Error(err)
+	}
+	defer file.Close()
+	rd := bufio.NewReader(file)
+	exps, err := ReadAll(rd)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	buf := new(bytes.Buffer)
+
+	for i, exp := range exps {
+		exp.Write(buf)
+		if i > 0 {
+			io.WriteString(buf, "\n")
+		}
+	}
+	output := buf.String()
+	bytesExpected, err := ioutil.ReadFile(filenameExpected)
+	expected := string(bytesExpected)
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	if output != expected {
+		t.Errorf("output %v not equal to expected %v", output, expected)
+		return
 	}
 }
 
@@ -67,4 +101,16 @@ func TestSRFI(t *testing.T) {
 
 	testFile(t, "../examples/hello.pose")
 	testFile(t, "../examples/srfi.pose")
+
+	files, err := ioutil.ReadDir("../examples/test")
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+
+	for _, file := range files {
+		if !file.IsDir() && strings.HasSuffix(file.Name(), ".pose") {
+			testFile(t, "../examples/test/"+file.Name())
+		}
+	}
 }
