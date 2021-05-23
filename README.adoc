@@ -192,61 +192,6 @@ is non-normative.
 Strings are always case sensitive for obvious reasons; there is no
 debate in the community about them.
 
-### Symmetry of string and symbol syntax with vertical bars
-
-Since strings and symbols are so similar, and Lisp programs can
-convert between them easily, it makes sense to have a syntax where any
-text that can be written as a string can also be written as a symbol.
-
-As in most languages, the default assumption in Lisp is that a run of
-alphanumeric characters in the source code is an identifier. Due to
-its simple syntax, Lisp is free to let an unusually large variety of
-ASCII characters appear in symbols in addition to alphanumerics. For
-example, the symbols `1+`, `///`, `floor/`, `call/cc`, `string\<=?`,
-`let*-values`, and `\*random-state*` are all defined in Lisp
-standards. `%` is a traditional prefix for unsafe internal functions,
-and `+` signs are suggested around the names of constants in Common
-Lisp.
-
-However, there's a limit to how flexible the syntax can be. Lisp is
-not quite as extreme as Forth. All Lisp dialects reserve `()` for
-lists. Some also reserve `[]` and `{}` as paired delimiters. `;` is
-the usual comment character, and `#` is the usual prefix for syntax
-extensions.
-
-To permit arbitrary characters to appear in symbol names, a special
-syntax is needed. Common Lisp and Scheme use vertical bars for this
-purpose. For example, `|foo bar|` encodes a symbol whose name is `foo
-bar`. The reader is greatly simplified if the character syntax inside
-double-quoted strings and vertical-bar symbols is the same. Then we
-can write `"foo \\ bar"` just as well as `|foo \\ bar|`. This is what
-we do in POSE.
-
-Vertical-bar notation accomplishes two other things:
-
-* Ensures that the token is always parsed as a symbol, never as a
-  number. It can be used to force a token that looks like a number to
-  be a symbol instead.
-
-* Ensures that the letter case is preserved when reading the symbol.
-  This does not matter in POSE, but is significant in Common Lisp.
-
-Vertical-bar notation is clumsy for oft-used symbols, but handy for
-preserving read-write invariance in special cases, and especially
-handy in ensuring that symbols valid in one Lisp dialect can be
-shipped into another dialect.
-
-### Ambiguity with consecutive symbols
-
-Two consecutive symbols can be written by separating them with
-whitespace, comments, or special characters: `foo bar`. That is
-intuitive enough. But what happens with vertical bars: is `|foo||bar|`
-equivalent to `|foo| |bar|` or `|foobar|`? Testing in different Lisp
-implementations shows that there is no consensus. We solve the
-ambiguity by banning a multiple consecutive runs of symbols such as
-`|foo||bar|` and `|foo|bar|baz|`. Alternating between symbols and
-numbers is also banned: `123|abc|123` is not allowed.
-
 ### Symbol packages, identifiers, and keywords
 
 Common Lisp puts symbols in packages; a CL symbol has two parts: the
@@ -269,7 +214,6 @@ when dealing only with surface syntax, so we ignore identifiers here.
 POSE symbols do not have package names, only symbol names. POSE does
 not have keywords. In order to avoid an ambiguity with keywords, POSE
 does not permit the traditional keyword marker `:` in symbol names.
-Symbols containing colons need to be written in vertical-bar notation.
 
 Clojure uses the slash `/` as package name delimiter, and permits only
 one slash to appear in a symbol. We judge that this is too extreme a
@@ -303,9 +247,6 @@ In POSE we use the following rule:
   be a valid number.
 
 * Any other token is a symbol.
-
-The rule does not apply within vertical bars; any text between
-vertical bars is parsed as a symbol, even when it looks like a number.
 
 ### Booleans, nil, and the empty list
 
