@@ -12,7 +12,7 @@ $   no particular meaning
 <   math operator
 =   math operator
 >   math operator
-_   for word delimiter in multi-word symbols (occasionally)
+_   word delimiter in multi-word symbols (occasionally)
 
 Punctuation permitted in symbols, but not as the first character
 
