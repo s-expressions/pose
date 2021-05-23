@@ -388,15 +388,23 @@ string-char  = string-esc | literal character
 string-esc   = \\ | \"
 
 number       = '0' | decimal
-decimal      = minus? 1-9 0-9* fraction? exponent?
-fraction     = '.' 0-9+
-exponent     = 'e' sign 0-9+
+decimal      = minus? digit notzero* fraction? exponent?
+fraction     = '.' digit+
+exponent     = 'e' sign digit+
 minus        = '-'
 sign         = '-' | '+'
 
-symbol       = symbol-first symbol-cont*
-symbol-first = a-z A-Z ! $ & * + - / < = > _
-symbol-cont  = symbol-first | 0-9 . ? @
+symbol       = signsym | wordsym
+signsym      = sign sigsym-2nd sigsym-cont*
+signsym-2nd  = letter | punct-cont
+signsym-cont = letter | punct-cont | digit
+wordsym-1st  = letter | punct-1st
+wordsym-cont = letter | punct-cont | digit
+punct-1st    = '!' | '$' | '&' | '*' | '+' | '-' | '/' | '<' | '=' | '>' | '_'
+punct-cont   = punct-1st | '.' | '?' | '@'
+letter       = a-z A-Z
+digit        = 0-9
+notzero      = 1-9
 ----
 
 ## Examples
