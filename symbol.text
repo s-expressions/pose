@@ -20,6 +20,13 @@ Punctuation permitted in symbols, but not as the first character
 ?   prefix for character literal (Emacs Lisp); suffix for predicate (Scheme, Clojure)
 @   prefix for splice operation (Kawa Scheme)
 
+Punctuation permitted in symbols, but only as the first character (tentative):
+
+:   prefix for keyword (CL, some Schemes);
+    disallowed as infix for symbol package (Common Lisp);
+    may be read as keyword or simple symbol in some Schemes;
+    symbols beginning with more than one : are disallowed
+
 Punctuation not allowed anywhere in a symbol
 
 #   prefix for syntax extension; comment (Janet)
