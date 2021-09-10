@@ -213,7 +213,14 @@ when dealing only with surface syntax, so we ignore identifiers here.
 
 POSE symbols do not have package names, only symbol names. POSE does
 not have keywords. In order to avoid an ambiguity with keywords, POSE
-does not permit the traditional keyword marker `:` in symbol names.
+does not permit the traditional package marker `:` within symbol names.
+
+However, `:` is permitted at the beginning of a symbol for pragmatic
+reasons: it is very common to use keywords in Common Lisp data files
+to avoid dropping them into a random package when they are received.
+However, a single `:` is not a POSE symbol, nor is a token beginning
+with more than one `:`.  Pose makes no semantic distinctions between
+symbols that begin with `:` and those that do not.
 
 Clojure uses the slash `/` as package name delimiter, and permits only
 one slash to appear in a symbol. We judge that this is too extreme a
@@ -333,7 +340,7 @@ decimal      = minus? onenine digit* fraction? exponent?
 fraction     = '.' digit+
 exponent     = 'e' sign digit+
 
-symbol       = wordsym | signsym
+symbol       = wordsym | signsym | colonsym
 wordsym      = wordsym-1st wordsym-cont*
 wordsym-1st  = letter | punct-1st
 wordsym-cont = letter | punct-cont | digit
@@ -341,6 +348,7 @@ signsym      = sign signsym-rest?
 signsym-rest = signsym-2nd signsym-cont*
 signsym-2nd  = letter | punct-cont
 signsym-cont = letter | punct-cont | digit
+colonsym     = ':' | signsym
 punct-1st    = '!' | '$' | '&' | '*' | '+' | '-' | '/' | '<' | '=' | '>' | '_'
 punct-cont   = punct-1st | '.' | '?' | '@'
 
