@@ -170,10 +170,12 @@ written as `#\a #\A #\space`. Since dialects are not unanimous in
 having a character type, and Unicode makes the concept of a character
 somewhat dubious, we omit the syntax from POSE.
 
-### Case sensitivity in symbols
+### Case sensitivity in symbols (DISPUTED)
 
 For a long time, there has been a debate over whether Lisp symbols
-should be case-sensitive or case-insensitive. Lisp is old enough that
+should be case-sensitive or case-insensitive.
+(Strings are always case sensitive for obvious reasons; there is no
+debate in the community about them.) Lisp is old enough that
 symbols used to be written in uppercase. When the Common Lisp standard
 came around, it dictated that lowercase or mixed-case symbols shall be
 normalized to uppercase equivalents when read in, with a reader option
@@ -182,15 +184,24 @@ case, but lowercase is the default starting with R^6^RS (2007). Almost
 all Scheme implementations are now case sensitive by default, and use
 lowercase.
 
+#### Argument pro
+
 There is a clear long-term trend among programming languages that case
 sensitivity is winning, and more and more Lisp dialects and
-implementations are following suit. Hence, we declare that all symbols
-are always case sensitive in POSE. Readers that need to interoperate
+implementations are following suit. Hence, all symbols
+are case sensitive in POSE. Readers that need to interoperate
 with the legacy uppercase symbols may relax this requirement, but that
 is non-normative.
 
-Strings are always case sensitive for obvious reasons; there is no
-debate in the community about them.
+#### Argument con
+
+Since most data is sent using lower case symbols only, a case-insensitive
+system will receive `(foo bar)` as `(|foo| |bar|`, which is very irritating
+to program with: code becomes littered with symbols in vertical bars,
+the vertical-bar key gets stuck when writing such code, and the programmer
+curses the spec authors.  Allowing symbols to be sent in any mixture of
+cases, but allowing the receiver to normalize them to a preferred case
+(upper case for CL) is easier.
 
 ### Symbol packages, identifiers, and keywords
 
@@ -348,7 +359,7 @@ signsym      = sign signsym-rest?
 signsym-rest = signsym-2nd signsym-cont*
 signsym-2nd  = letter | punct-cont
 signsym-cont = letter | punct-cont | digit
-colonsym     = ':' | signsym
+colonsym     = ':' | wordsym
 punct-1st    = '!' | '$' | '&' | '*' | '+' | '-' | '/' | '<' | '=' | '>' | '_'
 punct-cont   = punct-1st | '.' | '?' | '@'
 
