@@ -170,7 +170,7 @@ written as `#\a #\A #\space`. Since dialects are not unanimous in
 having a character type, and Unicode makes the concept of a character
 somewhat dubious, we omit the syntax from POSE.
 
-### Case sensitivity in symbols (DISPUTED)
+### Case sensitivity in symbols
 
 For a long time, there has been a debate over whether Lisp symbols
 should be case-sensitive or case-insensitive.
@@ -184,28 +184,18 @@ case, but lowercase is the default starting with R^6^RS (2007). Almost
 all Scheme implementations are now case sensitive by default, and use
 lowercase.
 
-#### Argument pro
-
-There is a clear long-term trend among programming languages that case
-sensitivity is winning, and more and more Lisp dialects and
-implementations are following suit. Hence, all symbols
-are case sensitive in POSE. Readers that need to interoperate
-with the legacy uppercase symbols may relax this requirement, but that
-is non-normative.
-
-#### Argument con
-
-Since most data is sent using lower case symbols only, a case-insensitive
-system will receive `(foo bar)` as `(|foo| |bar|`, which is very irritating
-to program with: code becomes littered with symbols in vertical bars,
-the vertical-bar key gets stuck when writing such code, and the programmer
-curses the spec authors.  Allowing symbols to be sent in any mixture of
-cases, but allowing the receiver to normalize them to a preferred case
-(upper case for CL) is easier.
+There is a clear long-term trend among programming languages that
+case sensitivity is winning, and more and more Lisp dialects and
+implementations are following suit.  However,
+since most data is sent using lower case symbols anyway,
+and a case-insensitive recipient will throw away
+the difference between `foo`, `Foo`, and `FOO`
+if the native `read` procedure is used, POSE
+restricts letters in symbols to ASCII lower case only.
 
 ### Symbol packages, identifiers, and keywords
 
-Common Lisp puts symbols in packages; a CL symbol has two parts: the
+Common Lisp puts symbols in packages; a symbol has two parts: the
 package name and the symbol name. These are separated by a colon as in
 `package:symbol`. If the colon is missing, the symbol is interned in
 the current package. If the colon is present but the package name is
@@ -223,15 +213,15 @@ distinction is important for hygienic macros, but is not important
 when dealing only with surface syntax, so we ignore identifiers here.
 
 POSE symbols do not have package names, only symbol names. POSE does
-not have keywords. In order to avoid an ambiguity with keywords, POSE
+not have keywords. In order to avoid problems with Common Lisp, POSE
 does not permit the traditional package marker `:` within symbol names.
 
 However, `:` is permitted at the beginning of a symbol for pragmatic
 reasons: it is very common to use keywords in Common Lisp data files
-to avoid dropping them into a random package when they are received.
+to avoid dropping them into a random package when they are read.
 However, a single `:` is not a POSE symbol, nor is a token beginning
-with more than one `:`.  Pose makes no semantic distinctions between
-symbols that begin with `:` and those that do not.
+with more than one `:`.  POSE doesn't care if a symbol starts with `:`
+or not, as long as `:foo` is distinct from `foo`.
 
 Clojure uses the slash `/` as package name delimiter, and permits only
 one slash to appear in a symbol. We judge that this is too extreme a
@@ -363,7 +353,7 @@ colonsym     = ':' | wordsym
 punct-1st    = '!' | '$' | '&' | '*' | '+' | '-' | '/' | '<' | '=' | '>' | '_'
 punct-cont   = punct-1st | '.' | '?' | '@'
 
-letter       = a-z | A-Z
+letter       = a-zeh
 digit        = 0-9
 onenine      = 1-9
 minus        = '-'
