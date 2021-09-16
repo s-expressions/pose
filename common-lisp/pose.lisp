@@ -125,12 +125,10 @@
 
 (defun read-string-escape (end-char stream)
   (let ((char (read-char stream nil)))
-    (if (eql end-char char) char
-        (case char
-          ((#\n) #\newline)
-          ((#\t) #\tab)
-          ((#\\) char)
-          (t (error "Unknown string escape: ~S" char))))))
+    (if (or (eql char #\\)
+            (eql char end-char))
+        char
+        (error "Unknown string escape: ~S" char))))
 
 (defun read-delimited-string (end-char stream)
   (with-output-to-string (out)
