@@ -23,11 +23,28 @@
   (or (pose-token-first-char? char)
       (string-member? ".@~^%&" char)))
 
-(define (parse-integer string radix)
+(define (make-float idigits fdigits fcount edigits)
+  )
+
+(define (parse-digits radix s i)
   #f)
 
-(define (parse-number-or-symbol string)
-  (string->symbol string))
+(define (parse-sign-and-digits radix s i)
+  (cond ((looking-at? #\+ s i) (+ (parse-digits radix s (+ i 1))))
+        ((looking-at? #\- s i) (- (parse-digits radix s (+ i 1))))
+        (else (parse-digits radix s i))))
+
+(define (parse-decimal-or-symbol s)
+  (let*-values
+      (((i ipart) (parse-sign-and-digits 10 s 0))
+       ((i fpart) (and ipart (< i n) (char=?
+                       (if . (parse-digits 10 s i))))
+       ((i epart) (and ipart (if e (parse-sign-and-digits 10 s 0))))
+       ((done?)  (= i len)))
+    (cond ((not ipart) (string->symbol s))
+          ((not done?) (error "Bad decimal number" s))
+          ((or fpart epart) (make-float ipart fpart epart))
+          (else ipart))))
 
 (define (skip-rest-of-line)
   (let ((char (read-char)))
@@ -61,8 +78,9 @@
                     ((#\o) 8)
                     ((#\x) 16)
                     (else (error "Unknown #" char)))))
-         (token (read-token-as-string)))
-    (or (parse-integer token radix)
+         (token (read-token-as-string))
+         (ipart (parse-sign-and-digits radix s 0)))
+    (if (and ipart done?) ipart
         (error "Cannot parse integer from token" token radix))))
 
 (define (read-delimited-list end-char)
