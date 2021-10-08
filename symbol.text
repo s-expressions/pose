@@ -32,7 +32,6 @@ Punctuation not allowed anywhere in a symbol
 %   prefix for character literal (Interlisp)
 '   prefix for quote
 ,   prefix for unquote
-:   prefix for keyword; infix for symbol package (Common Lisp)
 ;   prefix for comment
 \   prefix for character literal (Clojure); infix for string escape
 ^   prefix for metadata attached to an object (Clojure)
