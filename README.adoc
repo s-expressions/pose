@@ -349,7 +349,7 @@ signsym      = sign signsym-rest?
 signsym-rest = signsym-2nd signsym-cont*
 signsym-2nd  = letter | punct-cont
 signsym-cont = letter | punct-cont | digit
-colonsym     = ':' | wordsym
+colonsym     = ':' wordsym
 punct-1st    = '!' | '$' | '&' | '*' | '+' | '-' | '/' | '<' | '=' | '>' | '_'
 punct-cont   = punct-1st | '.' | '?' | '@'
 
