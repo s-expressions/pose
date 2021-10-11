@@ -353,7 +353,7 @@ colonsym     = ':' | wordsym
 punct-1st    = '!' | '$' | '&' | '*' | '+' | '-' | '/' | '<' | '=' | '>' | '_'
 punct-cont   = punct-1st | '.' | '?' | '@'
 
-letter       = a-zeh
+letter       = a-z
 digit        = 0-9
 onenine      = 1-9
 minus        = '-'
