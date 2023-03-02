@@ -1,0 +1,23 @@
+[project]
+name = "pose_expr"
+version = "0.1.0"
+authors = [
+  { name="Lassi Kortela", email="lassi@lassi.io" },
+]
+description = "Portable S-expressions (POSE)"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.7"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://www.s-expressions.org/"
+"Bug Tracker" = "https://github.com/s-expressions/pose/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
