@@ -3,7 +3,10 @@
 # Copyright 2022 Lassi Kortela
 # SPDX-License-Identifier: ISC
 
+import io
 import math
+
+from pose_expr import Symbol
 
 
 class PoseWriter:
@@ -13,7 +16,7 @@ class PoseWriter:
     def write(self, obj):
         if isinstance(obj, float):
             if not math.isfinite(obj):
-                raise ValueError("POSE cannot represent {}".format(repr(obj)))
+                raise ValueError(cannot(obj))
             self.stream.write(str(obj))
         elif isinstance(obj, int):
             self.stream.write(str(obj))
@@ -28,15 +31,28 @@ class PoseWriter:
             if obj.iswritable():
                 self.stream.write(str(obj))
             else:
-                raise TypeError("POSE cannot represent {}".format(repr(obj)))
+                raise TypeError(cannot(obj))
         elif isinstance(obj, list):
             self.stream.write("(")
-            for element in obj:
-                self.write(element)
+            if len(obj):
+                self.write(obj[0])
+                for i in range(1, len(obj)):
+                    self.stream.write(" ")
+                    self.write(obj[i])
             self.stream.write(")")
         else:
-            raise TypeError("POSE cannot represent {}".format(repr(obj)))
+            raise TypeError(cannot(obj))
 
     def write_all(self, objects):
         for obj in objects:
             self.write(obj)
+
+    @classmethod
+    def to_string(cls, obj):
+        with io.StringIO() as stream:
+            cls(stream).write(obj)
+            return stream.getvalue()
+
+    @staticmethod
+    def cannot(obj):
+        return "POSE cannot represent {}".format(repr(obj))
