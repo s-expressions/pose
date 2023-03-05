@@ -3,42 +3,27 @@
 # Copyright 2021 Lassi Kortela
 # SPDX-License-Identifier: ISC
 
+import json
 import string
 
-
-def is_whitespace_char(ch):
-    return (ch == " ") or (ch == "\t") or (ch == "\n") or (ch == "\r")
-
-
-def is_token_first_char(ch):
-    if ch in string.digits:
-        return True
-    if ch in string.ascii_letters:
-        return True
-    return ch in "_$!?<=>+-*/"
-
-
-def is_token_next_char(ch):
-    return is_token_first_char(ch) or (ch in ".@~^%&")
-
-
-class Symbol:
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return self.name  # TODO: vertical bars for complex symbols
-
-    def __str__(self):
-        return repr(self)
+from pose_expr import (
+    is_whitespace_char,
+    is_token_first_char,
+    is_token_next_char,
+    PoseSyntaxError,
+    Symbol,
+)
 
 
 def parse_number_or_symbol(s):
+    n = None
+    try:
+        n = json.loads(s)
+    except json.decoder.JSONDecodeError:
+        pass
+    if isinstance(n, int) or isinstance(n, float):
+        return n
     return Symbol(s)
-
-
-class PoseSyntaxError(Exception):
-    pass
 
 
 class PoseReader:
@@ -105,10 +90,7 @@ class PoseReader:
                 self.read_char()
                 break
             else:
-                try:
-                    forms.append(self.read())
-                except EOFError:
-                    raise PoseSyntaxError("Unterminated list")
+                forms.append(self.read())
         return forms
 
     def read_delimited_string(self, end_char):
@@ -167,10 +149,3 @@ class PoseReader:
                 forms.append(self.read())
         except EOFError:
             return forms
-
-
-if __name__ == "__main__":
-    import sys
-
-    for form in PoseReader(sys.stdin).read_all():
-        print(repr(form))
