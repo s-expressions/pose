@@ -336,19 +336,11 @@ string       = '"' string-char* '"'
 string-char  = string-esc | any-char-except-backslash
 string-esc   = \\ | \"
 
-number       = '0' | decimal
-decimal      = minus? onenine digit* fraction? exponent?
-fraction     = '.' digit+
-exponent     = 'e' sign digit+
-
 number       = integer fraction exponent
-integer      = digit | onenine digits | '-' digit | '-' onenine digits
-digits       = digit | digit digits
-digit        = '0' | onenine
-onenine      = '1' . '9'
+integer      = minus? digit | minus? onenine digits
+digits       = digit digits?
 fraction     = "" | '.' digits
-exponent     = "" | 'E' sign digits | 'e' sign digits
-sign         = "" | '+' | '-'
+exponent     = "" | echar sign? digits
 
 symbol       = wordsym | signsym | colonsym
 wordsym      = wordsym-1st wordsym-cont*
@@ -367,6 +359,7 @@ digit        = 0-9
 onenine      = 1-9
 minus        = '-'
 sign         = '-' | '+'
+echar        = 'e' | 'E'
 ----
 
 ## Examples
