@@ -341,6 +341,15 @@ decimal      = minus? onenine digit* fraction? exponent?
 fraction     = '.' digit+
 exponent     = 'e' sign digit+
 
+number       = integer fraction exponent
+integer      = digit | onenine digits | '-' digit | '-' onenine digits
+digits       = digit | digit digits
+digit        = '0' | onenine
+onenine      = '1' . '9'
+fraction     = "" | '.' digits
+exponent     = "" | 'E' sign digits | 'e' sign digits
+sign         = "" | '+' | '-'
+
 symbol       = wordsym | signsym | colonsym
 wordsym      = wordsym-1st wordsym-cont*
 wordsym-1st  = letter | punct-1st
